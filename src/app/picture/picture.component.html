@@ -1,8 +1,12 @@
-<form >
+<form>
     <mat-form-field class="example-full-width">
         <mat-label>Ссылка на картинку</mat-label>
-        <input matInput placeholder="картинка" name="name" [(ngModel)]="name">
+        <input matInput placeholder="картинка" name="name" [(ngModel)]="picture">
     </mat-form-field>
 </form>
 
-<img src="{{name}}" alt="">
+<!-- <img *ngIf="picture" class="img" src="{{picture}}"> -->
+<div >
+    <canvas #canvas (click)="getPosition($event)"  width="200" height="200"></canvas>
+    <p>{{position}}</p>
+</div>
