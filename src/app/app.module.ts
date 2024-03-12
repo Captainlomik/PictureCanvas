@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { materialModule } from './material.module';
 import { PictureComponent } from './picture/picture.component';
 import { MainPageComponent } from './main-page/main-page.component';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { MainPageComponent } from './main-page/main-page.component';
     AppRoutingModule, 
     materialModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [provideAnimations()],
+  bootstrap: [AppComponent,]
 })
 export class AppModule { }
