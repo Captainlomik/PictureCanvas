@@ -37,15 +37,9 @@
     }
 }
 
-.img {
-    width: 200px;
-    height: auto;
-}
 
 
 canvas {
     cursor: pointer;
-    width: auto;
-    height: auto;
-    max-height: 550px;
+    object-fit: contain;
 }

@@ -12,17 +12,11 @@ export class PictureComponent implements OnInit {
 
   constructor() { }
 
-  // picture: string = "https://www.fonstola.ru/images/201305/fonstola.ru_96099.jpg";
-  picture: string = './assets/cat.jpg'
+  picture!: string
   img = new Image();
-  x: number = 0
-  y: number = 0
-  width: number = 0
-  height: number = 0
-  position!: string
 
-  offsetPositionY!: number
-  offsetPositionX!: number
+  position!: string
+  size!: string
 
   colors: any
   RGB!: string
@@ -31,31 +25,38 @@ export class PictureComponent implements OnInit {
 
   ngOnInit(): void {
     this.context = this.myCanvas.nativeElement.getContext('2d')
+  }
 
-    if (this.picture && this.context) {
-      this.img.src = this.picture;
+  getImg() {
+    this.img.src = this.picture;
+    this.img.crossOrigin = "Anonymous";
 
-      setTimeout(() => this.drawCat(), 100);
+    if (this.img.src) {
+      setTimeout(() => this.drawImg(), 1000);
     }
   }
 
+  drawImg() {
+    let width = this.img.width
+    let height = this.img.height
 
-  drawCat() {
-    this.width = this.img.width
-    this.height = this.img.height
     if (this.context) {
-      this.context.drawImage(this.img, 0, 0, this.img.width, this.img.height)
+      this.size = `Ширина: ${width}; Длина: ${height}`
+
+      this.context.canvas.width = 300 * width / height
+      this.context.canvas.height = 300
+      this.context.drawImage(this.img, 0, 0, 300 * width / height, 300)
     }
   }
 
   getPosition(event: any) {
-    this.x = event.x
-    this.y = event.y
-    this.offsetPositionY = this.myCanvas.nativeElement.offsetTop
-    this.offsetPositionX = this.myCanvas.nativeElement.offsetLeft
+    let x = event.x
+    let y = event.y
+    let offsetPositionY = this.myCanvas.nativeElement.offsetTop
+    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft
 
-    this.getColor(this.x - this.offsetPositionX, this.y - this.offsetPositionY)
-    this.position = `x: ${this.x - this.offsetPositionX}, y: ${this.y - this.offsetPositionY}`
+    this.getColor(x - offsetPositionX, y - offsetPositionY)
+    this.position = `x: ${x - offsetPositionX}, y: ${y - offsetPositionY}`
   }
 
   getColor(x: number, y: number) {
