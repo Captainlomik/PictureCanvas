@@ -1,20 +1,27 @@
-<form>
-    <mat-form-field class="example-full-width">
-        <mat-label>Ссылка на картинку</mat-label>
-        <input matInput placeholder="картинка" name="name" [(ngModel)]="picture">
-    </mat-form-field>
-</form>
+<div class="picture__wrap">
+    <div class="picture__block">
+        <form class="picture__block-form">
+            <mat-form-field class="picture__input">
+                <mat-label>Ссылка на картинку</mat-label>
+                <input matInput placeholder="картинка" name="name" [(ngModel)]="picture">
+            </mat-form-field>
+        </form>
 
-<!-- <img *ngIf="picture" class="img" src="{{picture}}"> -->
-<div>
-    <canvas #canvas (click)="getPosition($event)"></canvas>
-    <p>Ширина: {{width}}; Длина: {{height}}</p>
-    <p>{{position}}</p>
-    <div class="result">
-        <span *ngIf="Hex">HEX: {{Hex}}</span>
-        <span *ngIf="RGB">RGB: {{RGB}}</span>
-    </div>
-    <div class="color"[style.backgroundColor]="Hex">
+        <div class="picture">
+            <canvas #canvas (click)="getPosition($event)"></canvas>
 
+            <div class="picture__output">
+                <p class="picture__output-info">Ширина: {{width}}; Длина: {{height}}</p>
+                <div class="picture__info">
+                    <div class="picture__info-block" [style.backgroundColor]="Hex"></div>
+                    <div class="picture__info-text">
+                        <p class="picture__info-position">{{position}}</p>
+                        <p *ngIf="Hex" class="picture__info-hex">HEX: {{Hex}}</p>
+                        <p *ngIf="RGB" class="picture__info-rgb">RGB: {{RGB}}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
