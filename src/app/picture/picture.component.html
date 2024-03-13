@@ -6,7 +6,15 @@
 </form>
 
 <!-- <img *ngIf="picture" class="img" src="{{picture}}"> -->
-<div >
-    <canvas #canvas (click)="getPosition($event)"  width="200" height="200"></canvas>
+<div>
+    <canvas #canvas (click)="getPosition($event)"></canvas>
+    <p>Ширина: {{width}}; Длина: {{height}}</p>
     <p>{{position}}</p>
+    <div class="result">
+        <span *ngIf="Hex">HEX: {{Hex}}</span>
+        <span *ngIf="RGB">RGB: {{RGB}}</span>
+    </div>
+    <div class="color"[style.backgroundColor]="Hex">
+
+    </div>
 </div>
