@@ -7,17 +7,22 @@ import { materialModule } from './material.module';
 import { PictureComponent } from './picture/picture.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { SettingsPopupComponent } from './settings-popup/settings-popup.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent, 
     PictureComponent, 
-    MainPageComponent
+    MainPageComponent,
+    SettingsPopupComponent, 
+   
   ],
-  imports: [
+  imports: [ 
     BrowserModule,
     AppRoutingModule, 
-    materialModule
+    materialModule,
+    ReactiveFormsModule
   ],
   providers: [provideAnimations()],
   bootstrap: [AppComponent,]

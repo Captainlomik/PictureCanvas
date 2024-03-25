@@ -1,0 +1,48 @@
+<mat-dialog-content>
+  <p>{{data}}</p>
+  <form>
+    <!-- <mat-form-field>
+      <mat-label>Единицы измерения</mat-label>
+      <mat-select [(ngModel)]="unit" name="unit">
+        @for (value of unitValues) {
+        <mat-option [value]="value">{{value}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field> -->
+    <mat-form-field class="example-full-width">
+      <mat-label>Длина</mat-label>
+      <input type="email" matInput placeholder="">
+      <!-- @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+            }
+            @if (emailFormControl.hasError('required')) {
+              <mat-error>Email is <strong>required</strong></mat-error>
+            } -->
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Ширина</mat-label>
+      <input type="email" matInput placeholder="">
+      <!-- @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+            }
+            @if (emailFormControl.hasError('required')) {
+              <mat-error>Email is <strong>required</strong></mat-error>
+            } -->
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Favorite food</mat-label>
+      <!-- <mat-select [(ngModel)]="selectedValue" name="food">
+              @for (food of foods; track food) {
+                <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+              }
+            </mat-select> -->
+    </mat-form-field>
+
+  </form>
+
+
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary">Сохранить</button>
+  <a (click)="closepopup()" mat-raised-button color="warn">Закрыть</a>
+</div>

@@ -1,27 +1,33 @@
 <div class="picture__wrap">
-    <div class="picture__block">
-        <form class="picture__block-form">
+    <div class="picture__input">
+        <div class="picture__block-form">
             <mat-form-field class="picture__input">
                 <mat-label>Ссылка на картинку</mat-label>
-                <input matInput placeholder="картинка" name="name" [(ngModel)]="picture" (change)="getImg()">
+                <input matInput placeholder="картинка" [(ngModel)]="picture" (change)="getImg()">
+                @if(picture){
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="picture=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
             </mat-form-field>
-        </form>
+            <button>Сохранить</button>
+        </div>
+    </div>
 
-        <canvas #canvas (click)="getPosition($event)" width="400" ></canvas>
+    <canvas #canvas (click)="getPosition($event)" width="400"></canvas>
 
-        <div class="picture" *ngIf="picture">
-            <div class="picture__output">
-                <p class="picture__output-info">{{size}}</p>
-                <div class="picture__info">
-                    <div class="picture__info-block" [style.backgroundColor]="Hex"></div>
-                    <div class="picture__info-text">
-                        <p class="picture__info-position">{{position}}</p>
-                        <p *ngIf="Hex" class="picture__info-hex">HEX: {{Hex}}</p>
-                        <p *ngIf="RGB" class="picture__info-rgb">RGB: {{RGB}}</p>
-                    </div>
-
+    <div class="picture">
+        <div class="picture__output" *ngIf="picture">
+            <p class="picture__output-info">{{size}}</p>
+            <div class="picture__info">
+                <div class="picture__info-text">
+                    <p class="picture__info-position">{{position}}</p>
+                    <p *ngIf="Hex" class="picture__info-hex">HEX: {{Hex}}</p>
+                    <p *ngIf="RGB" class="picture__info-rgb">RGB: <br> {{RGB}}</p>
                 </div>
+                <div class="picture__info-block" [style.backgroundColor]="Hex"></div>
             </div>
         </div>
+        <button mat-raised-button (click)="openDialog()">Pick one</button>
     </div>
 </div>

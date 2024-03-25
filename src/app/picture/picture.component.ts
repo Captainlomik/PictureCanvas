@@ -1,4 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SettingsPopupComponent } from '../settings-popup/settings-popup.component';
 
 @Component({
   selector: 'app-picture',
@@ -10,9 +12,9 @@ export class PictureComponent implements OnInit {
   @ViewChild('canvas', { static: true }) myCanvas!: ElementRef<HTMLCanvasElement>;
   private context!: CanvasRenderingContext2D | null;
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
-  picture!: string
+  picture: string = ''
   img = new Image();
 
   position!: string
@@ -41,7 +43,7 @@ export class PictureComponent implements OnInit {
     let height = this.img.height
 
     if (this.context) {
-      this.size = `Ширина: ${width}; Длина: ${height}`
+      this.size = `Ширина: ${width}px; Высота: ${height}px`
 
       this.context.canvas.width = 300 * width / height
       this.context.canvas.height = 300
@@ -73,5 +75,11 @@ export class PictureComponent implements OnInit {
       return hex.length === 1 ? '0' + hex : hex
     }).join('')
 
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SettingsPopupComponent, {
+      data: this.size,
+    });
   }
 }
