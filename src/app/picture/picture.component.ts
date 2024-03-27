@@ -78,9 +78,4 @@ export class PictureComponent implements OnInit, OnChanges {
 
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(SettingsPopupComponent, {
-      data: this.size,
-    });
-  }
 }

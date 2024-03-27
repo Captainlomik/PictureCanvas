@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SettingsPopupComponent } from '../settings-popup/settings-popup.component';
 
 @Component({
   selector: 'app-main-page',
@@ -7,5 +9,12 @@ import { Component } from '@angular/core';
 })
 export class MainPageComponent {
   picture: string = ''
+
+  constructor(public dialog: MatDialog) { }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SettingsPopupComponent, {
+    });
+  }
 
 }
