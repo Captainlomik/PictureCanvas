@@ -46,9 +46,9 @@ export class PictureComponent implements OnInit, OnChanges {
     if (this.context) {
       this.size = `Ширина: ${width}px;  Высота: ${height}px`
 
-      this.context.canvas.width = 300 * width / height
-      this.context.canvas.height = 300
-      this.context.drawImage(this.img, 0, 0, 300 * width / height, 300)
+      this.context.canvas.width = width
+      this.context.canvas.height = height
+      this.context.drawImage(this.img, 0, 0, width, height)
     }
   }
 
@@ -58,8 +58,8 @@ export class PictureComponent implements OnInit, OnChanges {
     let offsetPositionY = this.myCanvas.nativeElement.offsetTop
     let offsetPositionX = this.myCanvas.nativeElement.offsetLeft
 
-    this.getColor(x - offsetPositionX, y - offsetPositionY)
-    this.position = `x: ${x - offsetPositionX}, y: ${y - offsetPositionY}`
+    this.getColor(x, y- 80)
+    this.position = `x: ${x - offsetPositionX}, y: ${y - offsetPositionY - 80}`
   }
 
   getColor(x: number, y: number) {

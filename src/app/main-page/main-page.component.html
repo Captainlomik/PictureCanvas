@@ -15,16 +15,18 @@
     </div>
     <app-picture [picture]="picture" #info></app-picture>
 
+    @if (picture) {
     <div class="info-wrap">
         <div class="info">
-            @if (picture) {
+
             <p class="info__text info__size">{{info.size}}</p>
             <p class="info__text info__position">{{info.position}}</p>
             <p class="info__text info__hex" *ngIf="info.Hex">Hex: {{info.Hex}}</p>
             <p class="info__text info__rgb" *ngIf="info.RGB">RGB: {{info.RGB}}</p>
             <div class="info__block" [style.backgroundColor]="info.Hex"></div>
-            }
+
         </div>
-        <button mat-raised-button (click)="openDialog()">Изменить размер</button>
+        <button class="info__button" mat-raised-button (click)="openDialog()">Изменить размер</button>
     </div>
+    }
 </div>

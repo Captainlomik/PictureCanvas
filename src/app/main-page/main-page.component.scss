@@ -8,7 +8,7 @@
     align-items: center;
 
     &-wrap {
-        width: 100%;
+        width: 100vw;
         height: 60px;
         background-color: gray;
         position: fixed;
@@ -34,13 +34,16 @@
     align-items: center;
 
     &-wrap {
-        width: 100%;
+        width: 100vw;
         height: 35px;
         background-color: gray;
         position: fixed;
         bottom: 0;
         left: 0;
         padding: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     &__text {
@@ -55,5 +58,9 @@
         display: block;
         margin-left: 10px;
         margin-bottom: 12px;
+    }
+
+    &__button{
+        margin-right: 20px;
     }
 }
