@@ -7,11 +7,5 @@ import { Component } from '@angular/core';
 })
 export class MainPageComponent {
   picture: string = ''
-  img = new Image()
-
-  getImg() {
-    this.img.src = this.picture;
-    this.img.crossOrigin = "Anonymous";
-  }
 
 }

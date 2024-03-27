@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsPopupComponent } from '../settings-popup/settings-popup.component';
 
@@ -8,7 +8,7 @@ import { SettingsPopupComponent } from '../settings-popup/settings-popup.compone
   styleUrls: ['./picture.component.scss']
 })
 
-export class PictureComponent implements OnInit {
+export class PictureComponent implements OnInit, OnChanges {
   @ViewChild('canvas', { static: true }) myCanvas!: ElementRef<HTMLCanvasElement>;
   private context!: CanvasRenderingContext2D | null;
 
@@ -16,6 +16,7 @@ export class PictureComponent implements OnInit {
 
   @Input() picture!: string
   img = new Image()
+
 
   position!: string
   size!: string
@@ -29,7 +30,10 @@ export class PictureComponent implements OnInit {
     this.context = this.myCanvas.nativeElement.getContext('2d')
   }
 
-  getImg() {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.img.src = this.picture;
+    this.img.crossOrigin = "Anonymous";
+    
     if (this.img.src) {
       setTimeout(() => this.drawImg(), 1000);
     }
@@ -40,7 +44,7 @@ export class PictureComponent implements OnInit {
     let height = this.img.height
 
     if (this.context) {
-      this.size = `Ширина: ${width}px; Высота: ${height}px`
+      this.size = `Ширина: ${width}px;  Высота: ${height}px`
 
       this.context.canvas.width = 300 * width / height
       this.context.canvas.height = 300
