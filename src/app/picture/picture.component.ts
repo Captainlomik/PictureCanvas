@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsPopupComponent } from '../settings-popup/settings-popup.component';
 
@@ -14,8 +14,8 @@ export class PictureComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }
 
-  picture: string = ''
-  img = new Image();
+  @Input() picture!: string
+  img = new Image()
 
   position!: string
   size!: string
@@ -30,9 +30,6 @@ export class PictureComponent implements OnInit {
   }
 
   getImg() {
-    this.img.src = this.picture;
-    this.img.crossOrigin = "Anonymous";
-
     if (this.img.src) {
       setTimeout(() => this.drawImg(), 1000);
     }
