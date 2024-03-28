@@ -9,7 +9,7 @@ import { SettingsPopupComponent } from '../settings-popup/settings-popup.compone
 })
 export class MainPageComponent {
   picture: string = ''
-  currentFile!: File
+  currentFile!: File | null
 
   constructor(public dialog: MatDialog) { }
 
@@ -20,7 +20,9 @@ export class MainPageComponent {
 
   selectFile(e: any) {
     this.currentFile = e.target!.files.item(0);
-    console.log(this.currentFile)
   }
-
+  delete() {
+    this.currentFile = null
+    this.picture = ''
+  }
 }

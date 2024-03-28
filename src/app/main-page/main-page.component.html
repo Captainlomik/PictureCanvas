@@ -10,7 +10,11 @@
                 </button>
                 }
             </mat-form-field>
-            <input class="picture__button" type="file" id="picture" name="picture" accept="image/png, image/jpeg" (change)="selectFile($event)" />
+            <input type="file" id="picture" accept="image/png, image/jpeg" (change)="selectFile($event)" hidden />
+            <label for="picture" class="picture__button">Выбрать файл</label>
+            <button *ngIf="picture || currentFile" class="delete__button" mat-mini-fab color="primary" aria-label="delete picture" (click)="delete()">
+                <mat-icon>delete</mat-icon>
+            </button>
         </div>
     </div>
     <app-picture [picture]="picture" [file]="currentFile" #info></app-picture>
