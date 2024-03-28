@@ -15,7 +15,7 @@ export class PictureComponent implements OnInit, OnChanges {
   constructor(public dialog: MatDialog) { }
 
   @Input() picture!: string
-  @Input() file!: File
+  @Input() file!: File | null
   img = new Image()
 
 

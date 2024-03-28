@@ -26,7 +26,17 @@
 
     &__button {
         margin-left: 20px;
+        padding: 5px 10px;
+        background-color: rgb(98, 97, 97);
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+
+        &:hover {
+            background-color: lightgrey;
+        }
     }
+
 }
 
 .info {
@@ -60,7 +70,11 @@
         margin-bottom: 12px;
     }
 
-    &__button{
+    &__button {
         margin-right: 20px;
     }
+}
+
+.delete__button {
+    margin-left: 20px;
 }
