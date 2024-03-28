@@ -9,12 +9,18 @@ import { SettingsPopupComponent } from '../settings-popup/settings-popup.compone
 })
 export class MainPageComponent {
   picture: string = ''
+  currentFile!: File
 
   constructor(public dialog: MatDialog) { }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(SettingsPopupComponent, {
     });
+  }
+
+  selectFile(e: any) {
+    this.currentFile = e.target!.files.item(0);
+    console.log(this.currentFile)
   }
 
 }

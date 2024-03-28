@@ -10,12 +10,12 @@
                 </button>
                 }
             </mat-form-field>
-            <button mat-raised-button class="picture__btn">Загрузить картинку</button>
+            <input class="picture__button" type="file" id="picture" name="picture" accept="image/png, image/jpeg" (change)="selectFile($event)" />
         </div>
     </div>
-    <app-picture [picture]="picture" #info></app-picture>
+    <app-picture [picture]="picture" [file]="currentFile" #info></app-picture>
 
-    @if (picture) {
+    @if (picture || currentFile) {
     <div class="info-wrap">
         <div class="info">
 

@@ -15,6 +15,7 @@ export class PictureComponent implements OnInit, OnChanges {
   constructor(public dialog: MatDialog) { }
 
   @Input() picture!: string
+  @Input() file!: File
   img = new Image()
 
 
@@ -31,9 +32,10 @@ export class PictureComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.img.src = this.picture;
+
+    this.file ? this.img.src = URL.createObjectURL(this.file) : this.img.src = this.picture
     this.img.crossOrigin = "Anonymous";
-    
+
     if (this.img.src) {
       setTimeout(() => this.drawImg(), 1000);
     }
@@ -55,11 +57,11 @@ export class PictureComponent implements OnInit, OnChanges {
   getPosition(event: any) {
     let x = event.x
     let y = event.y
-    let offsetPositionY = this.myCanvas.nativeElement.offsetTop
-    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft
+    let offsetPositionY = this.myCanvas.nativeElement.offsetTop || document.documentElement.scrollTop;
+    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft || document.documentElement.scrollLeft;
 
-    this.getColor(x, y- 80)
-    this.position = `x: ${x - offsetPositionX}, y: ${y - offsetPositionY - 80}`
+    this.getColor(x + offsetPositionX, y + offsetPositionY)
+    this.position = `x: ${Math.trunc(x + offsetPositionX)}, y: ${Math.trunc(y + offsetPositionY)}`
   }
 
   getColor(x: number, y: number) {
