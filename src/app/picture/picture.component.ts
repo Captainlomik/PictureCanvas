@@ -57,11 +57,13 @@ export class PictureComponent implements OnInit, OnChanges {
   getPosition(event: any) {
     let x = event.x
     let y = event.y
-    let offsetPositionY = this.myCanvas.nativeElement.offsetTop || document.documentElement.scrollTop;
-    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft || document.documentElement.scrollLeft;
+    let offsetPositionY = this.myCanvas.nativeElement.offsetTop;
+    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft;
+    let scrollTop = (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    let scrollLeft = (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-    this.getColor(x + offsetPositionX, y + offsetPositionY)
-    this.position = `x: ${Math.trunc(x + offsetPositionX)}, y: ${Math.trunc(y + offsetPositionY)}`
+    this.getColor(x - offsetPositionX + scrollLeft, y - offsetPositionY + scrollTop)
+    this.position = `x: ${Math.trunc(x - offsetPositionX + scrollLeft )}, y: ${Math.trunc(y - offsetPositionY + scrollTop)}`
   }
 
   getColor(x: number, y: number) {
