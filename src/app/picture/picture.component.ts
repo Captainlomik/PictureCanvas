@@ -48,9 +48,10 @@ export class PictureComponent implements OnInit, OnChanges {
     if (this.context) {
       this.size = `Ширина: ${width}px;  Высота: ${height}px`
 
-      this.context.canvas.width = width
-      this.context.canvas.height = height
-      this.context.drawImage(this.img, 0, 0, width, height)
+      this.context.canvas.width = document.body.clientWidth;
+      this.context.canvas.height = document.body.clientHeight;
+
+      this.context.drawImage(this.img, 0, 0, document.body.clientWidth, document.body.clientHeight)
     }
   }
 
