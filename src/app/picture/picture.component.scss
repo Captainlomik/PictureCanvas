@@ -1,16 +1,4 @@
-.picture {
-
-    width: 120px;
-    height: 100vh;
-    position: fixed;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-}
-
 canvas {
     cursor: pointer;
+    padding: 50px;
 }

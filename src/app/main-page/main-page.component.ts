@@ -21,8 +21,13 @@ export class MainPageComponent {
   selectFile(e: any) {
     this.currentFile = e.target!.files.item(0);
   }
+
   delete() {
     this.currentFile = null
     this.picture = ''
   }
+
+  formatLabel(value: number) {
+  }
+
 }

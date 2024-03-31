@@ -20,18 +20,21 @@
     </div>
     <app-picture [picture]="picture" [file]="currentFile" #info></app-picture>
 
-    @if (picture || currentFile) {
+    <!-- @if (picture || currentFile) { -->
     <div class="info-wrap">
         <div class="info">
-
             <p class="info__text info__size">{{info.size}}</p>
             <p class="info__text info__position">{{info.position}}</p>
             <p class="info__text info__hex" *ngIf="info.Hex">Hex: {{info.Hex}}</p>
             <p class="info__text info__rgb" *ngIf="info.RGB">RGB: {{info.RGB}}</p>
             <div class="info__block" [style.backgroundColor]="info.Hex"></div>
-
+        </div>
+        <div>
+            <mat-slider min="0" max="300" step="50" showTickMarks discrete >
+                <input matSliderThumb>
+              </mat-slider>
         </div>
         <button class="info__button" mat-raised-button (click)="openDialog()">Изменить размер</button>
     </div>
-    }
+    <!-- } -->
 </div>

@@ -49,22 +49,37 @@ export class PictureComponent implements OnInit, OnChanges {
       this.size = `Ширина: ${width}px;  Высота: ${height}px`
 
       this.context.canvas.width = document.body.clientWidth;
-      this.context.canvas.height = document.body.clientHeight;
+      this.context.canvas.height = document.body.clientHeight - 230;
 
-      this.context.drawImage(this.img, 0, 0, document.body.clientWidth, document.body.clientHeight)
+      console.log(this.context.canvas.height)
+
+      let scale = Math.min(this.context.canvas.width / (this.img.width), this.context.canvas.height / (this.img.height));
+
+      let x = (this.context.canvas.width - this.img.width * scale) / 2;
+      let y = (this.context.canvas.height - this.img.height * scale) / 2;
+
+      console.log(scale)
+      console.log('x', x, 'y', y)
+
+      this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); // Очистка холста
+      this.context.drawImage(this.img, x, y, this.img.width * scale, this.img.height * scale);
+
+      // this.context.drawImage(this.img, 0, 0, document.body.clientWidth, document.body.clientHeight)
     }
   }
 
   getPosition(event: any) {
     let x = event.x
     let y = event.y
-    let offsetPositionY = this.myCanvas.nativeElement.offsetTop;
-    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft;
+
+    let offsetPositionY = this.myCanvas.nativeElement.offsetTop + 50;
+    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft + 50;
+
     let scrollTop = (document.documentElement || document.body.parentNode || document.body).scrollTop;
     let scrollLeft = (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
     this.getColor(x - offsetPositionX + scrollLeft, y - offsetPositionY + scrollTop)
-    this.position = `x: ${Math.trunc(x - offsetPositionX + scrollLeft )}, y: ${Math.trunc(y - offsetPositionY + scrollTop)}`
+    this.position = `x: ${Math.trunc(x - offsetPositionX + scrollLeft)}, y: ${Math.trunc(y - offsetPositionY + scrollTop)}`
   }
 
   getColor(x: number, y: number) {
