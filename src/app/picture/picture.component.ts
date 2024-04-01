@@ -54,19 +54,15 @@ export class PictureComponent implements OnInit, OnChanges {
       this.context.canvas.height = document.body.clientHeight - 230;
 
       let scale = Math.min(this.context.canvas.width / (this.img.width), this.context.canvas.height / (this.img.height));
-      let startRange = +(scale * 100).toFixed(0)
 
-      range ? range  : range = 1
+      range ? range : range = 1
 
       let x = (this.context.canvas.width - this.img.width * scale * range) / 2;
       let y = (this.context.canvas.height - this.img.height * scale * range) / 2;
 
-
-
       this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); // Очистка холста
       this.context.drawImage(this.img, x, y, this.img.width * scale * range, this.img.height * scale * range);
 
-      // this.context.drawImage(this.img, 0, 0, document.body.clientWidth, document.body.clientHeight)
     }
   }
 
