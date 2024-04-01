@@ -16,8 +16,8 @@ export class PictureComponent implements OnInit, OnChanges {
 
   @Input() picture!: string
   @Input() file!: File | null
+  @Input() rangePersent!: number
   img = new Image()
-
 
   position!: string
   size!: string
@@ -25,7 +25,6 @@ export class PictureComponent implements OnInit, OnChanges {
   colors: any
   RGB!: string
   Hex!: string
-
 
   ngOnInit(): void {
     this.context = this.myCanvas.nativeElement.getContext('2d')
@@ -39,34 +38,38 @@ export class PictureComponent implements OnInit, OnChanges {
     if (this.img.src) {
       setTimeout(() => this.drawImg(), 1000);
     }
+
   }
 
   drawImg() {
+    let range = this.rangePersent / 100
+
     let width = this.img.width
     let height = this.img.height
 
     if (this.context) {
       this.size = `Ширина: ${width}px;  Высота: ${height}px`
 
-      this.context.canvas.width = document.body.clientWidth;
+      this.context.canvas.width = document.body.clientWidth - 100;
       this.context.canvas.height = document.body.clientHeight - 230;
 
-      console.log(this.context.canvas.height)
-
       let scale = Math.min(this.context.canvas.width / (this.img.width), this.context.canvas.height / (this.img.height));
+      let startRange = +(scale * 100).toFixed(0)
 
-      let x = (this.context.canvas.width - this.img.width * scale) / 2;
-      let y = (this.context.canvas.height - this.img.height * scale) / 2;
+      range ? range  : range = 1
 
-      console.log(scale)
-      console.log('x', x, 'y', y)
+      let x = (this.context.canvas.width - this.img.width * scale * range) / 2;
+      let y = (this.context.canvas.height - this.img.height * scale * range) / 2;
+
+
 
       this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); // Очистка холста
-      this.context.drawImage(this.img, x, y, this.img.width * scale, this.img.height * scale);
+      this.context.drawImage(this.img, x, y, this.img.width * scale * range, this.img.height * scale * range);
 
       // this.context.drawImage(this.img, 0, 0, document.body.clientWidth, document.body.clientHeight)
     }
   }
+
 
   getPosition(event: any) {
     let x = event.x

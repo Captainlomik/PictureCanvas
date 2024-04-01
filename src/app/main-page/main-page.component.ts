@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsPopupComponent } from '../settings-popup/settings-popup.component';
 
@@ -8,8 +8,10 @@ import { SettingsPopupComponent } from '../settings-popup/settings-popup.compone
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent {
+  
   picture: string = ''
   currentFile!: File | null
+  rangePersent!: number
 
   constructor(public dialog: MatDialog) { }
 
@@ -25,9 +27,6 @@ export class MainPageComponent {
   delete() {
     this.currentFile = null
     this.picture = ''
-  }
-
-  formatLabel(value: number) {
   }
 
 }
