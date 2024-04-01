@@ -38,7 +38,7 @@
       </mat-select>
     </mat-form-field>
     <div mat-dialog-actions>
-      <button mat-raised-button color="primary" [disabled]="myForm.invalid">Сохранить</button>
+      <button mat-raised-button color="primary" [disabled]="myForm.invalid" [mat-dialog-close]="myForm.value">Сохранить</button>
       <a (click)="closepopup()" mat-raised-button color="warn">Закрыть</a>
     </div>
   </form>

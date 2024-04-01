@@ -38,6 +38,7 @@ export class SettingsPopupComponent {
 
   submitForm(form: NgForm) {
    this.dialogRef.close()
+   this.data = form
   }
 
 }

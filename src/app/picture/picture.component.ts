@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsPopupComponent } from '../settings-popup/settings-popup.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-picture',
@@ -17,6 +18,7 @@ export class PictureComponent implements OnInit, OnChanges {
   @Input() picture!: string
   @Input() file!: File | null
   @Input() rangePersent!: number
+  @Input() personResult!: Object
   img = new Image()
 
   position!: string

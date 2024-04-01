@@ -13,12 +13,19 @@ export class MainPageComponent {
   currentFile!: File | null
   rangePersent!: number
 
+  personResult!: Object
+
   constructor(public dialog: MatDialog) { }
 
   openDialog(info:string): void {
     const dialogRef = this.dialog.open(SettingsPopupComponent, {
       data: info
     });
+  
+    dialogRef.afterClosed().subscribe(result =>{
+      this.personResult = result
+    })
+    
   }
 
   selectFile(e: any) {
