@@ -1,47 +1,45 @@
 <mat-dialog-content>
-  <!-- <p>{{data}}</p> -->
-  <form [formGroup]="sizeForm">
+  <p>{{data}}</p>
+  <form #myForm="ngForm"  (ngSubmit)="submitForm(myForm)">
     <mat-form-field class="input">
       <mat-label>Единицы измерения</mat-label>
-      <mat-select name="unit">
+      <mat-select name="unitValue" [(ngModel)]="unitValue" >
         @for (value of unitValues; track value) {
         <mat-option [value]="value">{{value}}</mat-option>
         }
       </mat-select>
     </mat-form-field>
-    <mat-form-field class="input">
+    <mat-form-field class="input" *ngIf="unitValue === 'px'">
       <mat-label>Длина</mat-label>
-      <input type="width" matInput placeholder="">
-      <!-- @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-              <mat-error>Please enter a valid email address</mat-error>
-            }
-            @if (emailFormControl.hasError('required')) {
-              <mat-error>Email is <strong>required</strong></mat-error>
-            } -->
+      <input type="number" matInput name="width" [(ngModel)]="width" min="1"  maxLength="7">
     </mat-form-field>
-    <mat-form-field class="input">
+    <mat-form-field class="input" *ngIf="unitValue === 'px'">
       <mat-label>Высота</mat-label>
-      <input type="height" matInput placeholder="Метод">
-      <!-- @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-              <mat-error>Please enter a valid email address</mat-error>
-            }
-            @if (emailFormControl.hasError('required')) {
-              <mat-error>Email is <strong>required</strong></mat-error>
-            } -->
+      <input type="number" matInput name="height" [(ngModel)]="height" min="1"  maxLength="7">
     </mat-form-field>
+
+    <mat-form-field class="input" *ngIf="unitValue === '%'">
+      <mat-label>Длина</mat-label>
+      <input type="number" matInput name="width" [(ngModel)]="width" min="1" max="1000" value="100" >
+    </mat-form-field>
+
+    <mat-form-field class="input" *ngIf="unitValue === '%'">
+      <mat-label>Высота</mat-label>
+      <input type="number" matInput name="height" [(ngModel)]="height" min="1" max="1000" value="100">
+    </mat-form-field>
+
+    <mat-checkbox class="example-margin" name="checked" [(ngModel)]="checked">Сохранить пропорции</mat-checkbox>
     <mat-form-field class="input">
-      <mat-select>
-        @for (method of methods; track method) {
-        <mat-option [value]="method">{{method}}</mat-option>
-        }
+      <mat-label>Алгоритм интерполяции</mat-label>
+      <mat-select [(ngModel)]="alghoritm" name="alghoritm">
+        <mat-option value="neighbour">Ближайший сосед</mat-option>
+        <mat-option disabled>Билинейный</mat-option>
+        <mat-option disabled>Бикубически</mat-option>
       </mat-select>
     </mat-form-field>
-
+    <div mat-dialog-actions>
+      <button mat-raised-button color="primary" [disabled]="myForm.invalid">Сохранить</button>
+      <a (click)="closepopup()" mat-raised-button color="warn">Закрыть</a>
+    </div>
   </form>
-
-
 </mat-dialog-content>
-<div mat-dialog-actions>
-  <button mat-raised-button color="primary">Сохранить</button>
-  <a (click)="closepopup()" mat-raised-button color="warn">Закрыть</a>
-</div>

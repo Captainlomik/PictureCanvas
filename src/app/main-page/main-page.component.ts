@@ -15,8 +15,9 @@ export class MainPageComponent {
 
   constructor(public dialog: MatDialog) { }
 
-  openDialog(): void {
+  openDialog(info:string): void {
     const dialogRef = this.dialog.open(SettingsPopupComponent, {
+      data: info
     });
   }
 
