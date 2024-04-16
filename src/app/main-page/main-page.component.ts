@@ -1,6 +1,7 @@
 import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsPopupComponent } from '../settings-popup/settings-popup.component';
+import { Resize } from '../interface';
 
 @Component({
   selector: 'app-main-page',
@@ -13,7 +14,7 @@ export class MainPageComponent {
   currentFile!: File | null
   rangePersent!: number
 
-  personResult!: Object
+  personResult!: Resize
 
   constructor(public dialog: MatDialog) { }
 
