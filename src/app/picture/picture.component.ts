@@ -12,13 +12,15 @@ export class PictureComponent implements OnInit, OnChanges {
   @ViewChild('canvas', { static: true }) myCanvas!: ElementRef<HTMLCanvasElement>;
   private context!: CanvasRenderingContext2D | null;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
   @Input() picture!: string
   @Input() file!: File | null
   @Input() rangePersent!: number
   @Input() personResult!: Resize
   img = new Image()
+
+  scale!: number
 
   position!: string
   size!: string
@@ -27,30 +29,60 @@ export class PictureComponent implements OnInit, OnChanges {
   RGB!: string
   Hex!: string
 
-  ngOnInit(): void {
-    this.context = this.myCanvas.nativeElement.getContext('2d')
+  x: number = 0
+  y: number = 0
 
+
+  ngOnInit(): void {
+    this.context = this.myCanvas.nativeElement.getContext('2d');
+    if (this.context) {
+      this.context.canvas.width = document.body.clientWidth;
+      this.context.canvas.height = document.body.clientHeight - 130;
+    }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_: SimpleChanges): void {
+    if (!this.context) {
+      return
+    }
+
+    let oldImgSrc = this.img.src
 
     this.file ? this.img.src = URL.createObjectURL(this.file) : this.img.src = this.picture
     this.img.crossOrigin = "Anonymous";
 
+    if (this.img.src && oldImgSrc !== this.img.src) {
+      this.rangePersent = 90
+      this.scale = this.calcInitialScale()
+    }
+
+
     if (this.img.src) {
-      setTimeout(() => this.drawImg(0, 0), 1000);
-    }
+      let range = this.rangePersent / 100
+      this.drawImg(this.scale, range)
 
-    if(this.rangePersent){
-      this.scaleImg()
+      setTimeout(() => {
+        if (this.context?.canvas) {
+          this.newNearestNeighbor(this.context, this.x, this.y, 1635, 1090)
+        }
+      }, 1000)
     }
+  }
 
+  calcInitialScale(): number {
+    let width = this.img.width
+    let height = this.img.height
+
+    let canvasWidth = this.context!.canvas.width
+    let canvasHeight = this.context!.canvas.height
+
+    return Math.min(canvasWidth / (width), canvasHeight / (height));
   }
 
   drawImg(scale: number, range: number) {
     let width = this.img.width
     let height = this.img.height
-    
+
     let canvasWidth = this.context!.canvas.width
     let canvasHeight = this.context!.canvas.height
 
@@ -62,35 +94,19 @@ export class PictureComponent implements OnInit, OnChanges {
 
       let x = (canvasWidth - width * scale * range) / 2;
       let y = (canvasHeight - height * scale * range) / 2;
+      this.x = x
+      this.y = y
 
-      this.context.canvas.width = document.body.clientWidth - 100;
-      this.context.canvas.height = document.body.clientHeight - 230;
-
-      this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height); // Очистка холста
       this.context.drawImage(this.img, x, y, width * scale * range, height * scale * range);
-
     }
-  }
-
-  scaleImg() {
-    let width = this.img.width
-    let height = this.img.height
-    let canvasWidth = this.context!.canvas.width
-    let canvasHeight = this.context!.canvas.height
-
-    let range = this.rangePersent / 100
-
-    let scale = Math.min(canvasWidth / (width), canvasHeight / (height));
-
-    this.drawImg(scale, range)
   }
 
   getPosition(event: any) {
     let x = event.x
     let y = event.y
 
-    let offsetPositionY = this.myCanvas.nativeElement.offsetTop + 50;
-    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft + 50;
+    let offsetPositionY = this.myCanvas.nativeElement.offsetTop;
+    let offsetPositionX = this.myCanvas.nativeElement.offsetLeft;
 
     let scrollTop = (document.documentElement || document.body.parentNode || document.body).scrollTop;
     let scrollLeft = (document.documentElement || document.body.parentNode || document.body).scrollTop;
@@ -112,44 +128,34 @@ export class PictureComponent implements OnInit, OnChanges {
       const hex = x.toString(16)
       return hex.length === 1 ? '0' + hex : hex
     }).join('')
-
   }
 
+  newNearestNeighbor(ctx: CanvasRenderingContext2D, startX: number, startY: number, width: number, height: number) {
+    let oldImageData = ctx.getImageData(startX, startY, this.img.width, this.img.height)
+    let oldImageArray = oldImageData.data
 
-  ResizeNearestNeighbor() {
-    let srcImageData = this.context?.getImageData(0, 0, this.img.width, this.img.height)
-    let width = 500
-    let height = 500
-    var srcPixels = srcImageData!.data,
-      srcWidth = srcImageData!.width,
-      srcHeight = srcImageData!.height,
-      srcLength = srcPixels.length,
-      dstImageData = this.context!.createImageData(width, height),
-      dstPixels = dstImageData.data;
+    let kHeight = oldImageData.height / height
+    let kWidth = oldImageData.width / width
 
-    var xFactor = srcWidth / width,
-      yFactor = srcHeight / height,
-      dstIndex = 0, srcIndex,
-      x, y, offset;
+    let newImageArray = new Uint8ClampedArray(width * height * 4)
+    for (let ih = 0; ih < height; ih++) {
+      for (let iw = 0; iw < width; iw++) {
+        let srcIndex = (Math.floor(ih * kHeight) * oldImageData.width * 4) + (Math.floor(kWidth * iw)*4)
+        const r = oldImageArray[srcIndex]
+        const g = oldImageArray[srcIndex + 1]
+        const b = oldImageArray[srcIndex + 2]
+        const a = oldImageArray[srcIndex + 3]
 
-    for (y = 0; y < height; y += 1) {
-      offset = ((y * yFactor) | 0) * srcWidth;
-
-      for (x = 0; x < width; x += 1) {
-        srcIndex = (offset + x * xFactor) << 2;
-
-        dstPixels[dstIndex] = srcPixels[srcIndex];
-        dstPixels[dstIndex + 1] = srcPixels[srcIndex + 1];
-        dstPixels[dstIndex + 2] = srcPixels[srcIndex + 2];
-        dstPixels[dstIndex + 3] = srcPixels[srcIndex + 3];
-        dstIndex += 4;
+        let destIndex = (ih * width * 4) + (iw * 4)
+        newImageArray[destIndex] = r
+        newImageArray[destIndex + 1] = g
+        newImageArray[destIndex + 2] = b
+        newImageArray[destIndex + 3] = a
       }
     }
-    this.context!.clearRect(0, 0, this.context!.canvas.width, this.context!.canvas.height);
-    this.context?.putImageData(dstImageData, 0, 0)
-    return dstImageData;
-  };
 
+    let img = new ImageData(newImageArray, width, height)
 
-
+    ctx.putImageData(img, startX, startY);
+  }
 }

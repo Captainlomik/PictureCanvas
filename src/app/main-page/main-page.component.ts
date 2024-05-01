@@ -9,24 +9,23 @@ import { Resize } from '../interface';
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent {
-  
+
   picture: string = ''
   currentFile!: File | null
-  rangePersent!: number
+  rangePersent: number = 90
 
   personResult!: Resize
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
-  openDialog(info:string): void {
+  openDialog(info: string): void {
     const dialogRef = this.dialog.open(SettingsPopupComponent, {
       data: info
     });
-  
-    dialogRef.afterClosed().subscribe(result =>{
+
+    dialogRef.afterClosed().subscribe(result => {
       this.personResult = result
     })
-    
   }
 
   selectFile(e: any) {
@@ -36,6 +35,7 @@ export class MainPageComponent {
   delete() {
     this.currentFile = null
     this.picture = ''
+    this.rangePersent = 90
   }
 
 }
