@@ -12,12 +12,12 @@ export class PictureComponent implements OnInit, OnChanges {
   @ViewChild('canvas', { static: true }) myCanvas!: ElementRef<HTMLCanvasElement>;
   private context!: CanvasRenderingContext2D | null;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) { }
 
   @Input() picture!: string
   @Input() file!: File | null
   @Input() rangePersent!: number
-  @Input() personResult!: Resize
+  @Input() personResult!: Resize | null;
   img = new Image()
 
   scale!: number
@@ -32,6 +32,7 @@ export class PictureComponent implements OnInit, OnChanges {
   x: number = 0
   y: number = 0
 
+  newImg!: ImageData
 
   ngOnInit(): void {
     this.context = this.myCanvas.nativeElement.getContext('2d');
@@ -39,6 +40,8 @@ export class PictureComponent implements OnInit, OnChanges {
       this.context.canvas.width = document.body.clientWidth;
       this.context.canvas.height = document.body.clientHeight - 130;
     }
+
+
   }
 
   ngOnChanges(_: SimpleChanges): void {
@@ -59,13 +62,31 @@ export class PictureComponent implements OnInit, OnChanges {
 
     if (this.img.src) {
       let range = this.rangePersent / 100
-      this.drawImg(this.scale, range)
 
-      setTimeout(() => {
-        if (this.context?.canvas) {
-          this.newNearestNeighbor(this.context, this.x, this.y, 1635, 1090)
+
+      if (this.personResult) {
+        console.log(this.personResult)
+        let newPicWidth = this.personResult.unitValue === '%' ? (this.img.width * this.personResult.width) / 100 : this.personResult.width
+        let newPicHeight = this.personResult.unitValue === '%' ? (this.img.height * this.personResult.height) / 100 : this.personResult.height
+        if (this.personResult.checked) {
+          let prop = Math.round(this.img.width / this.img.height)
+          newPicHeight = Math.round(this.personResult.width / prop)
         }
-      }, 1000)
+        console.log(newPicWidth, newPicHeight)
+        this.size = `Ширина: ${newPicWidth}px;  Высота: ${newPicHeight}px`
+        this.newNearestNeighbor(this.context!, this.x, this.y, newPicWidth, newPicHeight)
+
+        this.personResult = null;
+        this.scale = 1;
+        range = 1
+      }
+      else {
+        setTimeout(() => {
+          this.context?.clearRect(0, 0, this.context!.canvas.width, this.context!.canvas.height)
+          this.drawImg(this.scale, range)
+        }, 1500)
+      }
+
     }
   }
 
@@ -76,15 +97,17 @@ export class PictureComponent implements OnInit, OnChanges {
     let canvasWidth = this.context!.canvas.width
     let canvasHeight = this.context!.canvas.height
 
+
     return Math.min(canvasWidth / (width), canvasHeight / (height));
   }
 
   drawImg(scale: number, range: number) {
-    let width = this.img.width
-    let height = this.img.height
+    let width = this.newImg ? this.newImg.width : this.img.width
+    let height = this.newImg ? this.newImg.height : this.img.height
 
     let canvasWidth = this.context!.canvas.width
     let canvasHeight = this.context!.canvas.height
+
 
     if (this.context) {
       this.size = `Ширина: ${width}px;  Высота: ${height}px`
@@ -97,7 +120,13 @@ export class PictureComponent implements OnInit, OnChanges {
       this.x = x
       this.y = y
 
-      this.context.drawImage(this.img, x, y, width * scale * range, height * scale * range);
+      if (this.newImg) {
+        this.context.putImageData(this.newImg, 0, 0, 0, 0, width * scale * range, height * scale * range)
+      }
+      else {
+        this.context.drawImage(this.img, x, y, width * scale * range, height * scale * range);
+      }
+
     }
   }
 
@@ -140,7 +169,7 @@ export class PictureComponent implements OnInit, OnChanges {
     let newImageArray = new Uint8ClampedArray(width * height * 4)
     for (let ih = 0; ih < height; ih++) {
       for (let iw = 0; iw < width; iw++) {
-        let srcIndex = (Math.floor(ih * kHeight) * oldImageData.width * 4) + (Math.floor(kWidth * iw)*4)
+        let srcIndex = (Math.floor(ih * kHeight) * oldImageData.width * 4) + (Math.floor(kWidth * iw) * 4)
         const r = oldImageArray[srcIndex]
         const g = oldImageArray[srcIndex + 1]
         const b = oldImageArray[srcIndex + 2]
@@ -154,8 +183,10 @@ export class PictureComponent implements OnInit, OnChanges {
       }
     }
 
-    let img = new ImageData(newImageArray, width, height)
+    this.newImg = new ImageData(newImageArray, width, height)
 
-    ctx.putImageData(img, startX, startY);
+    this.context?.clearRect(0, 0, this.context!.canvas.width, this.context!.canvas.height)
+    ctx.putImageData(this.newImg, startX, startY);
+
   }
 }
