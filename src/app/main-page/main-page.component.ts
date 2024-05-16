@@ -38,4 +38,8 @@ export class MainPageComponent {
     this.rangePersent = 90
   }
 
+  download(img:any){
+
+  }
+
 }

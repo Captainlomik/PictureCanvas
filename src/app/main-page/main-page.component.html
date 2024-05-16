@@ -2,23 +2,29 @@
     <div class="hidden__block"></div>
     <div class="nav-wrap">
         <div class="nav">
-            <mat-form-field class="picture__input">
-                <mat-label>Ссылка на картинку</mat-label>
-                <input matInput placeholder="Ссылка на картинку" [(ngModel)]="picture">
-                @if(picture){
-                <button matSuffix mat-icon-button aria-label="Clear" (click)="picture=''">
-                    <mat-icon>close</mat-icon>
+            <div>
+                <mat-form-field class="picture__input">
+                    <mat-label>Ссылка на картинку</mat-label>
+                    <input matInput placeholder="Ссылка на картинку" [(ngModel)]="picture">
+                    @if(picture){
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="picture=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    }
+                </mat-form-field>
+                <input type="file" id="picture" accept="image/png, image/jpeg" (change)="selectFile($event)" hidden />
+                <label for="picture" class="picture__button">Выбрать файл</label>
+                <button *ngIf="picture || currentFile" class="delete__button" mat-mini-fab color="primary"
+                    aria-label="delete picture" (click)="delete()">
+                    <mat-icon>delete</mat-icon>
                 </button>
-                }
-            </mat-form-field>
-            <input type="file" id="picture" accept="image/png, image/jpeg" (change)="selectFile($event)" hidden />
-            <label for="picture" class="picture__button">Выбрать файл</label>
-            <button *ngIf="picture || currentFile" class="delete__button" mat-mini-fab color="primary" aria-label="delete picture" (click)="delete()">
-                <mat-icon>delete</mat-icon>
-            </button>
+            </div>
+            <a mat-raised-button id="download" href="{{info.newImg}}" *ngIf="info.newImg" (click)="download(info.newImg)" >Скачать</a>
         </div>
+
     </div>
-    <app-picture [picture]="picture" [file]="currentFile" [rangePersent]="rangePersent" [personResult]="personResult" #info></app-picture>
+    <app-picture [picture]="picture" [file]="currentFile" [rangePersent]="rangePersent" [personResult]="personResult"
+        #info></app-picture>
 
     <!-- @if (picture || currentFile) { -->
     <div class="info-wrap">
@@ -30,9 +36,9 @@
             <div class="info__block" [style.backgroundColor]="info.Hex"></div>
         </div>
         <div>
-            <mat-slider min="10" max="300" step="10" showTickMarks discrete  >
+            <mat-slider min="10" max="300" step="10" showTickMarks discrete>
                 <input matSliderThumb value="90" [(ngModel)]="rangePersent">
-              </mat-slider>
+            </mat-slider>
         </div>
         <button class="info__button" mat-raised-button (click)="openDialog(info.size)">Изменить размер</button>
     </div>

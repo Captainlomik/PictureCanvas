@@ -41,7 +41,6 @@ export class PictureComponent implements OnInit, OnChanges {
       this.context.canvas.height = document.body.clientHeight - 130;
     }
 
-
   }
 
   ngOnChanges(_: SimpleChanges): void {
@@ -187,6 +186,5 @@ export class PictureComponent implements OnInit, OnChanges {
 
     this.context?.clearRect(0, 0, this.context!.canvas.width, this.context!.canvas.height)
     ctx.putImageData(this.newImg, startX, startY);
-
   }
 }
