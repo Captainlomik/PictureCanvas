@@ -40,11 +40,7 @@ export class PictureComponent implements OnInit, OnChanges {
       this.context.canvas.width = document.body.clientWidth;
       this.context.canvas.height = document.body.clientHeight - 130;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 2f288dee3d6f6b2a458f54f7a241ccb0f1246102
-  }
+   }
 
   ngOnChanges(_: SimpleChanges): void {
     if (!this.context) {
