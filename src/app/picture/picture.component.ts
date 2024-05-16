@@ -32,7 +32,7 @@ export class PictureComponent implements OnInit, OnChanges {
   x: number = 0
   y: number = 0
 
-  newImg!: ImageData
+  newImg!: ImageBitmap
 
   ngOnInit(): void {
     this.context = this.myCanvas.nativeElement.getContext('2d');
@@ -59,8 +59,6 @@ export class PictureComponent implements OnInit, OnChanges {
       }
 
       if (this.img.src) {
-        let range = this.rangePersent / 100
-
         if (this.personResult) {
           console.log(this.personResult)
           let newPicWidth = this.personResult.unitValue === '%' ? (this.img.width * this.personResult.width) / 100 : this.personResult.width
@@ -74,11 +72,8 @@ export class PictureComponent implements OnInit, OnChanges {
           this.newNearestNeighbor(this.context!, this.x, this.y, newPicWidth, newPicHeight)
 
           this.personResult = null;
-          this.scale = 1;
-          range = 1
         } else {
-          this.context?.clearRect(0, 0, this.context!.canvas.width, this.context!.canvas.height)
-          this.drawImg(this.scale, range)
+          this.drawImg(this.scale, this.rangePersent / 100)
         }
       }
     }
@@ -87,6 +82,10 @@ export class PictureComponent implements OnInit, OnChanges {
   calcInitialScale(): number {
     let width = this.img.width
     let height = this.img.height
+    if (!!this.newImg) {
+      width = this.newImg.width
+      height = this.newImg.height
+    }
 
     let canvasWidth = this.context!.canvas.width
     let canvasHeight = this.context!.canvas.height
@@ -102,7 +101,6 @@ export class PictureComponent implements OnInit, OnChanges {
     let canvasWidth = this.context!.canvas.width
     let canvasHeight = this.context!.canvas.height
 
-
     if (this.context) {
       this.size = `Ширина: ${width}px;  Высота: ${height}px`
 
@@ -114,12 +112,12 @@ export class PictureComponent implements OnInit, OnChanges {
       this.x = x
       this.y = y
 
+      this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height)
       if (this.newImg) {
-        this.context.putImageData(this.newImg, 0, 0, 0, 0, width * scale * range, height * scale * range)
+        this.context.drawImage(this.newImg, x, y, width * scale * range, height * scale * range)
       } else {
         this.context.drawImage(this.img, x, y, width * scale * range, height * scale * range);
       }
-
     }
   }
 
@@ -152,8 +150,10 @@ export class PictureComponent implements OnInit, OnChanges {
     }).join('')
   }
 
-  newNearestNeighbor(ctx: CanvasRenderingContext2D, startX: number, startY: number, width: number, height: number) {
-    let oldImageData = ctx.getImageData(startX, startY, this.img.width, this.img.height)
+  async newNearestNeighbor(ctx: CanvasRenderingContext2D, startX: number, startY: number, width: number, height: number) {
+    let w = Math.floor(this.img.width * this.scale * (this.rangePersent / 100))
+    let h = Math.floor(this.img.height * this.scale * (this.rangePersent / 100))
+    let oldImageData = ctx.getImageData(startX, startY, w, h)
     let oldImageArray = oldImageData.data
 
     let kHeight = oldImageData.height / height
@@ -176,10 +176,13 @@ export class PictureComponent implements OnInit, OnChanges {
       }
     }
 
-    this.newImg = new ImageData(newImageArray, width, height)
+    let imageData = new ImageData(newImageArray, width, height)
+    await createImageBitmap(imageData).then(img => {
+      this.newImg = img
+    })
 
-    this.context?.clearRect(0, 0, this.context!.canvas.width, this.context!.canvas.height)
-    ctx.putImageData(this.newImg, startX, startY);
-
+    this.scale = this.calcInitialScale()
+    this.rangePersent = 90
+    this.drawImg(this.scale, this.rangePersent / 100)
   }
 }
